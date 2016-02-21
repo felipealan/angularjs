@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html ng-app="notesApp">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body ng-controller="MainCtrl as ctrl">
+        
+        <button ng-click="ctrl.changeNotes()">Change Notes</button>
+        <br />
+        DOM Elements change every time someone Clicks
+        <div ng-repeat="note in ctrl.notes1">
+            {{note.$$hashKey}}
+            <span class="label">{{note.label}}</span>
+            <span class="author" ng-bind="note.done"></span>
+        </div>
+        
+        <br />
+        DOM Elements are reused every time someone clicks
+        <div ng-repeat="note in ctrl.notes2 track by note.id">
+            {{note.$$hashKey}}
+            <span class="label">{{note.label}}</span>
+            <span class="author" ng-bind="note.done"></span>
+        </div>
+        
+        <script src="angular.min.js"></script>
+        <script>
+            angular.module('notesApp', [])
+                    .controller('MainCtrl', [function(){
+                        var self = this;
+                        var notes = [
+                            {id: 1, label: 'First Note', done: false, someRandom: 31431},  
+                            {id: 2, label: 'Second Note', done: false},  
+                            {id: 3, label: 'Finished Third Note', done: true},  
+                        ];
+                        self.notes1 = angular.copy(notes);
+                        self.notes2 = angular.copy(notes);
+                        
+                        self.changeNotes = function (){
+                            console.log(1111)
+                            notes = [
+                                {id: 1, label: 'Changed Note', done: false, someRandom: 4242},
+                                {id: 2, label: 'Second Note', done: false},
+                                {id: 3, label: 'Finished Third Note', done: true},
+                            ];
+                            
+                            self.notes1 = angular.copy(notes);
+                            self.notes2 = angular.copy(notes);
+                        };
+                    }]);
+        </script>
+    </body>
+</html>
